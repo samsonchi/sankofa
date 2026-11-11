@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Sankofa Design System
+   Palette derived from the Akan Sankofa carving:
+   ebony body, crimson feathers, gold egg, on warm parchment.
+   ============================================================ */
+
+:root {
+  /* Surfaces */
+  --background: #faf5ec; /* warm parchment */
+  --surface: #fffdf8; /* card / raised */
+  --surface-sunken: #f3ebdb; /* wells, alt sections */
+
+  /* Text */
+  --foreground: #211915; /* warm ebony ink */
+  --muted: #6b5d4f; /* secondary text (>= 4.5:1 on parchment) */
+
+  /* Brand */
+  --primary: #9e2b25; /* crimson feather */
+  --primary-hover: #842019;
+  --on-primary: #fdf3e9;
+  --accent: #b07a1e; /* gold / ochre egg */
+  --accent-strong: #8a5e14; /* gold for text on light */
+  --secondary: #5c4733; /* earthen brown */
+
+  /* Lines & states */
+  --border: #e7dcc9;
+  --border-strong: #d6c7ad;
+  --ring: #9e2b25;
+  --destructive: #b3261e;
+  --success: #3f6212;
+
+  --radius: 0.75rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-secondary: var(--secondary);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+
+  --font-sans: var(--font-poppins);
+  --font-display: var(--font-poppins);
+
+  --radius-lg: var(--radius);
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Accessible focus ring on every interactive element */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+}
+
+/* Reusable layout helpers */
+@utility container-page {
+  width: 100%;
+  max-width: 72rem; /* 1152px */
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@utility container-prose {
+  width: 100%;
+  max-width: 44rem; /* ~65ch */
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+/* Subtle entrance animation, motion-safe only */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-rise {
+    animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+/* Custom cursor: hide native cursor only on precise-pointer devices
+   once the JS cursor has mounted (html.cursor-ready). */
+@media (hover: hover) and (pointer: fine) {
+  html.cursor-ready,
+  html.cursor-ready * {
+    cursor: none !important;
+  }
+}
+
+/* Infinite marquee */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 36s) linear infinite;
+  will-change: transform;
+}
+
+.marquee-group:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Typewriter blinking caret */
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.type-caret {
+  display: inline-block;
+  width: 0.07em;
+  height: 1.05em;
+  margin-left: 0.06em;
+  vertical-align: text-bottom;
+  background: var(--primary);
+  border-radius: 1px;
+  animation: caret-blink 1s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+  .type-caret {
+    animation: none !important;
+  }
+}
