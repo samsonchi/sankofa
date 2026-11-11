@@ -140,7 +140,7 @@ export function Hero() {
                 href="/curriculum"
                 className="inline-flex h-13 min-h-[44px] items-center justify-center gap-2 rounded-full bg-primary px-7 text-base font-medium text-on-primary shadow-sm transition-[background-color,box-shadow] duration-200 hover:bg-primary-hover hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
-                Explore the curriculum
+                Check the curriculum
                 <ArrowRight className="h-5 w-5" aria-hidden />
               </Link>
             </motion.span>
